@@ -1,0 +1,8 @@
+{
+    "rust-analyzer.cargo.autoreload": true,
+    "rust-analyzer.checkOnSave.command": "clippy",
+    "rust-analyzer.imports.granularity": "module",
+    "rust-analyzer.cargo.runBuildScripts": true,
+    "rust-analyzer.checkOnSave.all": true
+  }
+  
