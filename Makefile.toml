@@ -1,0 +1,17 @@
+[tasks.migration-generate]
+description = "Generate a new migration"
+command = "powershell"
+args = [
+    "-Command", 
+    "sea-orm-cli migrate generate -- --name $(name)"
+]
+
+[tasks.migration-run]
+description = "Run all pending migrations"
+command = "sea-orm-cli"
+args = ["migrate", "up"]
+
+[tasks.migration-revert]
+description = "Revert the last migration"
+command = "sea-orm-cli"
+args = ["migrate", "down"]
