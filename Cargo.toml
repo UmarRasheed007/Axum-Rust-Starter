@@ -1,25 +1,25 @@
 [package]
-name = "axum_rust_api_boilerplate"
+name = "axum_rust_api_template_by_UmarRasheed"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-axum = { version = "0.6.3", features = ["headers"] }
-hyper = { version = "0.14.23", features = ["full"] }
+axum = { version = "0.7.7" }
+hyper = { version = "1.5.0", features = ["full"] }
 tokio = { version = "1.24.2", features = ["full"] }
-tower = { version = "0.4.13", features = ["full"] }
-tower-http = { version = "0.4.0", features = ["full"] }
+tower = { version = "0.5.1", features = ["full"] }
+tower-http = { version = "0.6.1", features = ["full"] }
 dotenv = "0.15.0"
 serde =  { version = "1.0.152", features = ["derive"] }
-jsonwebtoken = "8.3.0"
-thiserror = "1.0.40"
+jsonwebtoken = "9.3.0"
+thiserror = "2.0.3"
 chrono = {version = "0.4.24", features = ["serde"]}
-bcrypt = "0.14.0"
+bcrypt = "0.15.1"
 serde_json = "1.0.95"
-mockall = "0.11.4"
-sqlx = { version = "0.6.3", features = ["runtime-tokio-native-tls", "migrate", "chrono", "time"] }
-validator = { version = "0.16.0", features = ["derive"] }
+mockall = "0.13.0"
+sqlx = { version = "0.8.2", features = ["runtime-tokio-native-tls", "migrate", "chrono", "time"] }
+validator = { version = "0.19.0", features = ["derive"] }
 async-trait = "0.1.68"
-sqlx-cli = "0.6.3"
+sqlx-cli = "0.8.2"
 tracing-subscriber = "0.3.17"
 
