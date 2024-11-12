@@ -1,40 +1,30 @@
-#![allow(unused)]
-use axum::{
-    extract::Query,
-    response::{Html, IntoResponse},
-    routing::get,
-    Router,
-};
-use std::net::SocketAddr;
+use crate::config::database::DatabaseTrait;
+use crate::config::{database, parameter};
+use std::sync::Arc;
 
-use serde::Deserialize;
-
-#[derive(Deserialize)]
-struct HelloParams {
-    name: Option<String>,
-}
-async fn hello_world(Query(params): Query<HelloParams>) -> impl IntoResponse {
-    let name = params.name.unwrap_or("World".to_string());
-    let html = format!(
-        r#"
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <title>Hello, World!</title>
-            </head>
-            <body>
-                <h1>Hello, {name}!</h1>
-            </body>
-        </html>"#
-    );
-    return Html(html);
-}
+mod config;
+mod dto;
+mod entity;
+mod error;
+mod handler;
+mod middleware;
+mod repository;
+mod response;
+mod routes;
+mod service;
+mod state;
 
 #[tokio::main]
 async fn main() {
-    let app = Router::new().route("/", get(hello_world));
+    parameter::init();
+    let connection = database::Database::init()
+        .await
+        .unwrap_or_else(|e| panic!("Database error: {}", e.to_string()));
 
-    // run our app with hyper, listening globally on port 3000
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+    let host = format!("0.0.0.0:{}", parameter::get("PORT"));
+    tracing_subscriber::fmt::init();
+    axum::Server::bind(&host.parse().unwrap())
+        .serve(routes::root::routes(Arc::new(connection)))
+        .await
+        .unwrap_or_else(|e| panic!("Server error: {}", e.to_string()));
 }
