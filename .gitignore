@@ -1,1 +1,31 @@
+# Ignore target directory
 /target
+
+# Ignore build artifacts
+**/*.rs.bk
+
+# Ignore IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignore environment files
+.env
+
+# Ignore Cargo.lock if you're building a library
+# Cargo.lock
+
+# Ignore node_modules if you have a frontend in the same repository
+node_modules/
+
+# Ignore coverage reports
+coverage/
+*.lcov
+
+# Ignore logs
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
