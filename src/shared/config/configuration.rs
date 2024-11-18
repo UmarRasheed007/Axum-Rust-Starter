@@ -1,5 +1,7 @@
-use config::{Config, ConfigError, Environment, File};
+use config::ConfigError;
+use dotenv::dotenv;
 use serde::Deserialize;
+use std::env;
 
 #[derive(Debug, Deserialize)]
 pub struct DatabaseConfig {
@@ -15,13 +17,22 @@ pub struct AppConfig {
 
 impl AppConfig {
     pub fn from_env() -> Result<Self, ConfigError> {
-        // Initialize configuration and add sources for environment variables and .env files
-        let config = Config::builder()
-            .add_source(File::with_name(".env").required(false))
-            .add_source(Environment::default())
-            .build()?;
+        // Load environment variables from the .env file
+        dotenv().ok();
 
-        // Deserialize configuration into AppConfig struct
-        config.try_deserialize::<AppConfig>()
+        // Create the AppConfig struct with values from environment variables
+        let config = AppConfig {
+            env: env::var("ENV").map_err(|e| ConfigError::Message(e.to_string()))?,
+            port: env::var("PORT")
+                .map_err(|e| ConfigError::Message(e.to_string()))?
+                .parse::<u16>()
+                .map_err(|e| ConfigError::Message(e.to_string()))?,
+            database: DatabaseConfig {
+                database_url: env::var("DATABASE_URL")
+                    .map_err(|e| ConfigError::Message(e.to_string()))?,
+            },
+        };
+
+        Ok(config)
     }
 }

@@ -1,5 +1,5 @@
 use crate::shared::config::configuration::AppConfig;
-use axum;
+use axum::{self, Router};
 use once_cell::sync::Lazy;
 //use std::sync::Arc;
 
@@ -7,6 +7,7 @@ use crate::shared::config::database;
 use crate::shared::config::database::DatabaseTrait;
 use crate::shared::config::module_options::validate_config;
 
+mod auth;
 mod shared;
 // mod dto;
 // mod entity;
@@ -15,7 +16,7 @@ mod shared;
 // mod middleware;
 // mod repository;
 // mod response;
-mod routes;
+// mod routes;
 // mod service;
 // mod state;
 
@@ -39,8 +40,9 @@ async fn main() {
 
     // Set up the server
     let host = format!("0.0.0.0:{}", CONFIG.port);
+
     // creating and starting the server
-    let app = routes::auth::routes();
+    let app = Router::new().nest("/auth", auth::auth_routes());
     let listener = tokio::net::TcpListener::bind(&host.parse::<std::net::SocketAddr>().unwrap())
         .await
         .unwrap();
