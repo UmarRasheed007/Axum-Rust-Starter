@@ -41,6 +41,8 @@ async fn main() {
     // Set up the server
     let host = format!("0.0.0.0:{}", CONFIG.port);
 
+    //sample code to check from which github I am commiting
+
     // creating and starting the server
     let app = Router::new().nest("/auth", auth::auth_routes());
     let listener = tokio::net::TcpListener::bind(&host.parse::<std::net::SocketAddr>().unwrap())
